@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Registrar Usuario{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4">Registrar Nuevo Usuario</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="bg-white p-4 shadow-sm rounded">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_nombre" class="form-label">Nombre</label>
+            {{ form.nombre }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_correo" class="form-label">Correo Electrónico</label>
+            {{ form.correo }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_contrasena" class="form-label">Contraseña</label>
+            {{ form.contrasena }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_rol" class="form-label">Rol del Usuario</label>
+            {{ form.rol }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Volver</a>
+    </form>
+</div>
+{% endblock %}

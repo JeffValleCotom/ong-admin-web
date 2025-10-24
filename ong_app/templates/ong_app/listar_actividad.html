@@ -1,0 +1,38 @@
+{% extends "base_maestro.html" %}
+{% block title %}Lista de Actividades{% endblock %}
+{% block content %}
+<h2 class="fw-bold mb-4">Mis Actividades</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Alumno</th>
+            <th>Descripción</th>
+            <th>Tipo</th>
+            <th>Fecha Asignación</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for actividad in actividades %}
+        <tr>
+            <td>{{ actividad.id_actividad }}</td>
+            <td>{{ actividad.id_alumno.nombre }}</td>
+            <td>{{ actividad.descripcion }}</td>
+            <td>{{ actividad.tipo_actividad }}</td>
+            <td>{{ actividad.fecha_asignacion|date:"d/m/Y H:i" }}</td>
+            <td>{{ actividad.estado }}</td>
+            <td>
+                <a href="{% url 'editar_actividad' actividad.id_actividad %}" class="btn btn-warning btn-sm">Editar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7" class="text-center">No hay actividades registradas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

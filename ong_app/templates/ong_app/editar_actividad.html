@@ -1,0 +1,43 @@
+{% extends "base_maestro.html" %}
+{% block title %}Editar Actividad{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4 text-center">Editar Actividad</h2>
+
+    <div class="card shadow-sm p-4">
+        <form method="POST" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                {{ form.descripcion }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tipo de Actividad</label>
+                {{ form.tipo_actividad }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Fecha de Asignación</label>
+                {{ form.fecha_asignacion }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Estado</label>
+                {{ form.estado }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Alumno Asignado</label>
+                {{ form.id_alumno }}
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% url 'inicio_maestro' %}" class="btn btn-secondary">
+                    ← Cancelar
+                </a>
+                <button type="submit" class="btn btn-success">
+                    💾 Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

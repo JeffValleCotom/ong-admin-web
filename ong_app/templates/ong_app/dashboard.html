@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de Administración</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-light">
+
+  <!-- Barra superior -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white fw-bold" href="#">Logo</a>
+      <div class="d-flex">
+        <span class="text-white me-3">Bienvenido, {{ usuario_nombre }}</span>
+        <a href="{% url 'login' %}" class="btn btn-danger btn-sm">Cerrar Sesión</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <!-- Menú lateral -->
+      <div class="col-md-2 bg-white shadow-sm p-3 rounded">
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="{% url 'dashboard' %}" class="nav-link active text-primary fw-bold">Dashboard</a></li>
+           <li class="nav-item mb-2"><a href="{% url 'registrar_usuarios' %}" class="nav-link text-dark">Registrar Usuarios</a></li>
+          <li class="nav-item mb-2"><a href="{% url 'registrar_alumno' %}" class="nav-link text-dark">Registrar Alumno</a></li>
+          <li class="nav-item"><a href="#" class="nav-link text-dark">Generar Reportes</a></li>
+        </ul>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="col-md-10">
+        <h2 class="fw-bold mb-4">Dashboard de Administración</h2>
+
+        <div class="row text-center mb-4">
+          <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3">
+              <h5><i class="bi bi-mortarboard"></i> {{ total_alumnos }}</h5>
+              <p>Total Alumnos Registrados</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3">
+              <h5>{{ maestros_activos }}</h5>
+              <p>Maestros Activos</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3">
+              <h5>{{ psicologos }}</h5>
+              <p>Psicólogos en Plantilla</p>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card shadow-sm p-3">
+              <h5>{{ actividades_mes }}</h5>
+              <p>Actividades Programadas (Mes)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribución de alumnos -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+              <h6 class="fw-bold mb-3">Distribución de Alumnos por Nivel</h6>
+              <canvas id="graficoNiveles"></canvas>
+            </div>
+          </div>
+
+          <!-- Actividad reciente -->
+          <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+              <h6 class="fw-bold mb-3">Actividad Reciente</h6>
+              <ul class="list-group">
+                {% for act in actividad_reciente %}
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>{{ act.0 }}</span>
+                  <small class="text-muted">{{ act.1|date:"d/m/Y H:i" }}</small>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted text-center">No hay actividades recientes</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Script gráfico -->
+  <script>
+    const ctx = document.getElementById('graficoNiveles');
+    const labels = [{% for n in distribucion_nivel %}'{{ n.0 }}',{% endfor %}];
+    const data = [{% for n in distribucion_nivel %}{{ n.1 }},{% endfor %}];
+
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545']
+        }]
+      },
+      options: {
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+  </script>
+
+</body>
+</html>

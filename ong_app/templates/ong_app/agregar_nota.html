@@ -1,0 +1,29 @@
+{% extends "base_maestro.html" %}
+
+{% block title %}Agregar Nota{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow p-4">
+    <h3 class="fw-bold text-primary mb-3">Agregar Nota para {{ alumno.nombre }} {{ alumno.apellido }}</h3>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="nota" class="form-label fw-bold">Nota (0 - 100)</label>
+        <input type="number" step="0.01" name="nota" id="nota" class="form-control" placeholder="Ej: 85.5" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="observaciones" class="form-label fw-bold">Observaciones</label>
+        <textarea name="observaciones" id="observaciones" rows="4" class="form-control" placeholder="Comentarios opcionales..."></textarea>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <a href="{% url 'ver_alumno' alumno.id_alumno %}" class="btn btn-secondary me-2">Cancelar</a>
+        <button type="submit" class="btn btn-success">Guardar Nota</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base_maestro.html" %}
+{% block title %}Asignar Actividad{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4 text-center">Asignar Actividad a {{ alumno.nombre }} {{ alumno.apellido }}</h2>
+
+    <form method="POST" class="card p-4 shadow">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea name="descripcion" class="form-control" rows="4" placeholder="Describe la actividad..." required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tipo de Actividad</label>
+            <select name="tipo_actividad" class="form-select">
+                <option value="">Seleccione tipo...</option>
+                <option value="Tarea">Tarea</option>
+                <option value="Ejercicio">Ejercicio</option>
+                <option value="Terapia">Terapia</option>
+                <option value="Otra">Otra</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Fecha de Entrega</label>
+            <input type="datetime-local" name="fecha_entrega" class="form-control">
+        </div>
+
+        <div class="text-center">
+            <button  type="submit" class="btn btn-success px-4">Guardar Actividad</button>
+            <a href="{% url 'inicio_maestro' %}" class="btn btn-secondary px-4">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

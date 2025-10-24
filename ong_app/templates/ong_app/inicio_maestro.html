@@ -1,0 +1,71 @@
+{% extends "base_maestro.html" %}
+{% load static %}
+
+{% block title %}Dashboard Maestro{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4">Dashboard del Maestro</h2>
+
+<!-- Sección: Mis Alumnos -->
+<div class="row mb-4">
+    {% for alumno in alumnos %}
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm p-3 text-center">
+            <img src="{% static 'img/default_user.png' %}" class="rounded-circle mb-2" width="80" height="80" alt="Alumno">
+            <h5>{{ alumno.nombre }} {{ alumno.apellido }}</h5>
+            <p>
+                {% if alumno.diagnostico %}
+                Diagnostico: {{ alumno.diagnostico }}
+                {% else %}
+                Sin actividad registrada
+                {% endif %}
+            </p>
+            <a href="{% url 'ver_alumno' alumno.id_alumno %}" class="btn btn-outline-primary btn-sm mb-1">Ver Perfil</a>
+            <a href="{% url 'eliminar_alumno' alumno.id_alumno %}" class="btn btn-danger btn-sm">Eliminar</a>
+            <a href="{% url 'agregar_nota' alumno.id_alumno %}" class="btn btn-primary btn-sm mb-1">Agregar Nota</a>
+            <a href="{% url 'agregar_actividad' alumno.id_alumno %}" class="btn btn-primary btn-sm mb-1">Asignar Actividad</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <!-- Actividades Recientes -->
+    <div class="col-md-8">
+        <div class="card shadow-sm p-3 mb-4">
+            <h6 class="fw-bold mb-3">Actividades Recientes</h6>
+            <ul class="list-group">
+                {% for act in actividades_recientes %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ act.descripcion }}</strong><br>
+                        <small class="text-muted">
+                            Alumno: {{ act.id_alumno.nombre }} {{ act.id_alumno.apellido }}
+                        </small>
+                    </div>
+                    <div>
+                        <small class="text-muted">{{ act.fecha_asignacion|date:"d/m/Y" }}</small>
+                        <a href="{% url 'editar_actividad' act.id_actividad %}" class="btn btn-warning btn-sm ms-2">Editar</a>
+                        <a href="{% url 'eliminar_actividad' act.id_actividad %}" class="btn btn-danger btn-sm ms-2"
+                          onclick="return confirm('¿Estás seguro de eliminar esta actividad?');">Eliminar</a>
+                    </div>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted text-center">No hay actividades recientes</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Resumen Rápido -->
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+            <h6 class="fw-bold mb-3">Resumen Rápido</h6>
+            <p>Alumnos Asignados: {{ total_alumnos }}</p>
+            <p>Notas Agregadas (este mes): {{ notas_mes }}</p>
+            <p>Actividades Registradas: {{ total_actividades }}</p>
+            <a href="#" class="btn btn-primary w-100 mt-2">Generar Reporte Completo</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

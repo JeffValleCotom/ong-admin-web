@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Psicólogo{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold mb-4">Dashboard Psicólogo</h2>
+
+<div class="row text-center mb-4">
+  <div class="col-md-4 mb-3">
+    <div class="card shadow-sm p-3">
+      <h5>{{ actividades.count }}</h5>
+      <p>Actividades a Supervisar</p>
+    </div>
+  </div>
+</div>
+
+<!-- Lista de actividades asignadas -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card shadow-sm p-3">
+      <h6 class="fw-bold mb-3">Actividades a Supervisar</h6>
+      <ul class="list-group">
+        {% for act in actividades %}
+        <li class="list-group-item d-flex justify-content-between">
+          <span>{{ act.descripcion }}</span>
+          <small class="text-muted">{{ act.fecha_asignacion|date:"d/m/Y H:i" }}</small>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted text-center">No hay actividades asignadas</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
